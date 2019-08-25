@@ -13829,7 +13829,7 @@ body {
     }
     100% {
         opacity: 0;
-        -webkit-transform: scale3d(0.1) translate3d(-2000px, 0, 0);
+        -webkit-transform: scale3d(0.1, 0.1, 0.1) translate3d(-2000px, 0, 0);
         -webkit-transform-origin: left center
     }
 }
@@ -13858,7 +13858,7 @@ body {
     }
     100% {
         opacity: 0;
-        -webkit-transform: scale3d(0.1) translate3d(2000px, 0, 0);
+        -webkit-transform: scale3d(0.1, 0.1, 0.1) translate3d(2000px, 0, 0);
         -webkit-transform-origin: right center
     }
 }
@@ -13870,7 +13870,7 @@ body {
     }
     100% {
         opacity: 0;
-        transform: scale3d(0.1) translate3d(2000px, 0, 0);
+        transform: scale3d(0.1, 0.1, 0.1) translate3d(2000px, 0, 0);
         transform-origin: right center
     }
 }
