@@ -85,7 +85,7 @@ const heroTypes = {
 
 let game = {
     inputs: [],
-    friends: []
+    friends: ["test1", "test2"]
 };
 
 const dev_mode = location.hostname === "localhost" || location.hostname === "127.0.0.1";
@@ -153,6 +153,18 @@ function addEntry() {
         save();
     } else {
         console.log("Invalid Entry");
+        console.log(
+            {
+                "date": new Date().getTime(),
+                "map": map,
+                "side": side,
+                "groupSize": groupSize,
+                "heroes": heroes,
+                "score": score,
+                "SR": SR,
+                "friends": friends
+            }
+        );
     }
 }
 
@@ -202,6 +214,7 @@ function save() {
 function setupButtons() {
     document.querySelector("#submitEntry").addEventListener("click", addEntry);
     document.querySelector("#resetEntry").addEventListener("click", resetEntryInput);
+    document.querySelector("#owGroupSize").addEventListener("change", updateFriendsDisable);
 }
 
 function updateFriendsDisable() {
