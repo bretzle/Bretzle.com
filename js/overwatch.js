@@ -101,10 +101,32 @@ function addEntry() {
             }
         );
         console.log("Added new entry");
-        console.log(game.inputs[game.inputs.length - 1])
+        console.log(game.inputs[game.inputs.length - 1]);
+        resetEntryInput();
     } else {
         console.log("Invalid input. No Entry created")
     }
+}
+
+function resetEntryInput() {
+    document.getElementById("owMap").value = "";
+    document.getElementById("owSide").value = "Attack";
+    document.getElementById("owScore").value = "";
+    document.getElementById("owSR").value = "";
+
+    document.getElementById("owGroupSize").value = "1";
+    updateFriendsDisable();
+
+    document.getElementById("owFriend_1").value = "";
+    document.getElementById("owFriend_2").value = "";
+    document.getElementById("owFriend_3").value = "";
+    document.getElementById("owFriend_4").value = "";
+    document.getElementById("owFriend_5").value = "";
+
+    document.getElementById("owHero_1").value = "";
+    document.getElementById("owHero_2").value = "";
+    document.getElementById("owHero_3").value = "";
+    document.getElementById("owHero_4").value = "";
 }
 
 function load() {
