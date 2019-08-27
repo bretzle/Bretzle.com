@@ -91,6 +91,7 @@ let game = {
 const dev_mode = location.hostname === "localhost" || location.hostname === "127.0.0.1";
 
 load();
+setupButtons();
 setupAutoCompleteForHeroes();
 generateTableOffCookies();
 save();
@@ -147,7 +148,9 @@ function addEntry() {
             "friends": friends
         });
         console.log("Added entry");
+        generateTableOffCookies();
         resetEntryInput();
+        save();
     } else {
         console.log("Invalid Entry");
     }
@@ -194,6 +197,11 @@ function save() {
     } else {
         console.log("Failed to save");
     }
+}
+
+function setupButtons() {
+    document.querySelector("#submitEntry").addEventListener("click", addEntry);
+    document.querySelector("#resetEntry").addEventListener("click", resetEntryInput);
 }
 
 function updateFriendsDisable() {
