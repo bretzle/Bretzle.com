@@ -59,13 +59,11 @@ let isSaving = false;
 let game;
 
 load();
-fillMapPool();
-fillHeroPool();
 
 function newGame() {
     return {
         inputs: [],
-        friends: []
+        friends: ["test1", "test2"]
     };
 }
 
@@ -78,9 +76,13 @@ function addEntry() {
     let SR = parseInt(document.getElementById("owSR").value);
     let friends = document.getElementById("owFriends").value.split(";");
 
+    if (friends[0] === "") {
+        friends = [];
+    }
+
     let correctInput = true;
 
-    if (map === "" || side === "" || isNaN(groupSize) || score === "" || isNaN(SR) || friends.length + 1 !== groupSize) {
+    if (map === "" || score === "" || isNaN(SR) || friends.length + 1 !== groupSize) {
         correctInput = false
     }
 
@@ -136,6 +138,19 @@ function fillMapPool() {
 
 function fillHeroPool() {
 
+}
+
+function fillFriendPool() {
+    let selectTag = document.getElementById("owFriends");
+    let option = document.createElement("option");
+    option.text = "";
+    selectTag.add(option);
+
+    game.friends.forEach(function(name) {
+        option = document.createElement("option");
+        option.text = String(name);
+        selectTag.add(option);
+    })
 }
 
 function getMaps() {
