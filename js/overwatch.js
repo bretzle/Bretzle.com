@@ -9,7 +9,7 @@ const HEROES = [
     "Genji",
     "Hanzo",
     "Junkrat",
-    "Lúcio",
+    "Lucio",
     "McCree",
     "Mei",
     "Mercy",
@@ -55,6 +55,32 @@ const MAPS = [
     "Watchpoint: Gibraltar",
 ];
 
+const mapTypes = {
+    control: [
+        "Busan", "Ilios", "Lijiang Tower", "Nepal", "Oasis"
+    ],
+    assault: [
+        "Hanamura", "Horizon Lunar Colony", "Paris", "Temple of Anubis", "Volskaya Industries"
+    ],
+    hybrid: [
+        "Blizzard World", "Eichenwalde", "Hollywood", "King's Row", "Numbani"
+    ],
+    escort: [
+        "Dorado", "Havana", "Junkertown", "Rialto", "Route 66", "Watchpoint: Gibraltar"
+    ]
+};
+const heroTypes = {
+    tank: [
+        "D.Va", "Orisa", "Reinhardt", "Roadhog", "Sigma", "Winston", "Wrecking Ball", "Zarya",
+    ],
+    damage: [
+        "Ashe", "Bastion", "Doomfist", "Genji", "Hanzo", "Junkrat", "McCree", "Mei", "Pharah", "Reaper", "Soldier: 76", "Sombra", "Symmetra", "Torbjörn", "Tracer", "Widowmaker",
+    ],
+    support: [
+        "Ana", "Baptiste", "Brigitte", "Lucio", "Mercy", "Moira", "Zenyatta"
+    ]
+};
+
 let isSaving = false;
 let game;
 
@@ -72,39 +98,50 @@ function addEntry() {
     let map = document.getElementById("owMap").value;
     let side = document.getElementById("owSide").value;
     let groupSize = parseInt(document.getElementById("owGroupSize").value);
-    let heroes = document.getElementById("owHeroes").value.split(";");
-    let score = document.getElementById("owScore").value;
+    let score = document.getElementById("owScore").value.split(":");
     let SR = parseInt(document.getElementById("owSR").value);
-    let friends = document.getElementById("owFriends").value.split(";");
 
-    if (friends[0] === "") {
-        friends = [];
-    }
+    let friends = [
+        document.getElementById("owFriend_1").value,
+        document.getElementById("owFriend_2").value,
+        document.getElementById("owFriend_3").value,
+        document.getElementById("owFriend_4").value,
+        document.getElementById("owFriend_5").value,
+    ];
 
-    let correctInput = true;
+    let heroes = [
+        document.getElementById("owHero_1").value,
+        document.getElementById("owHero_2").value,
+        document.getElementById("owHero_3").value,
+        document.getElementById("owHero_4").value
+    ];
 
-    if (map === "" || score === "" || isNaN(SR) || friends.length + 1 !== groupSize) {
-        correctInput = false
-    }
+    friends = friends.filter(function (e) {
+        return game.friends.indexOf(e) !== -1;
+    });
 
-    if (correctInput) {
-        game.inputs.push(
-            {
-                "date": new Date().getTime(),
-                "map": map,
-                "side": side,
-                "groupSize": groupSize,
-                "heroes": heroes,
-                "score": score,
-                "SR": SR,
-                "friends": friends
-            }
-        );
-        console.log("Added new entry");
-        console.log(game.inputs[game.inputs.length - 1]);
+    heroes = heroes.filter(function (e) {
+        return HEROES.indexOf(e) !== -1;
+    });
+
+    score = [parseInt(score[0]), parseInt(score[1])];
+
+    if (map !== "" && groupSize - 1 === friends.length && heroes.length >= 1 && score.length === 2 && SR > 0 && SR < 5000) {
+        game.inputs.push({
+            "date": new Date().getTime(),
+            "map": map,
+            "side": side,
+            "groupSize": groupSize,
+            "heroes": heroes,
+            "score": score,
+            "SR": SR,
+            "friends": friends
+        });
+        console.log("Added entry");
+        save();
         resetEntryInput();
     } else {
-        console.log("Invalid input. No Entry created")
+        console.log("Invalid Entry");
     }
 }
 
@@ -208,7 +245,9 @@ function autoComplete(field, arr) {
         let a, b, i, val = this.value;
         closeAllLists();
 
-        if (!val) { return false; }
+        if (!val) {
+            return false;
+        }
         currentFocus = -1;
 
         a = document.createElement("DIV");
@@ -222,7 +261,7 @@ function autoComplete(field, arr) {
                 b = document.createElement("DIV");
                 b.innerHTML = "<strong>" + arr[i].substr(0, val.length) + "</strong>";
                 b.innerHTML += arr[i].substr(val.length);
-                b.innerHTML += "<input type='hidden' value='" + arr[i] +"'>";
+                b.innerHTML += "<input type='hidden' value='" + arr[i] + "'>";
 
                 b.addEventListener("click", function () {
                     field.value = this.getElementsByTagName("input")[0].value;
