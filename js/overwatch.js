@@ -1,3 +1,5 @@
+import LZString from "./LZString.js";
+
 const HEROES = [
     "Ana",
     "Ashe",
@@ -81,17 +83,24 @@ const heroTypes = {
     ]
 };
 
-let isSaving = false;
-let game;
+let game = {
+    inputs: [],
+    friends: []
+};
+
+const dev_mode = location.hostname === "localhost" || location.hostname === "127.0.0.1";
 
 load();
 setupAutoCompleteForHeroes();
+generateTableOffCookies();
+save();
 
-function newGame() {
-    return {
-        inputs: [],
-        friends: ["test1", "test2", "test3", "test4", "test5", "test6", "test7"]
-    };
+if (dev_mode) {
+    console.log("Server running in a dev environment.");
+    console.log("Loading dev tools");
+    window.load = load;
+    window.save = save;
+    window.generateRandomEntries = generateRandomEntry;
 }
 
 function addEntry() {
@@ -138,7 +147,6 @@ function addEntry() {
             "friends": friends
         });
         console.log("Added entry");
-        save();
         resetEntryInput();
     } else {
         console.log("Invalid Entry");
@@ -167,20 +175,25 @@ function resetEntryInput() {
 }
 
 function load() {
-    const cookies = document.cookie;
-
-    if (cookies === "") {
-        game = newGame();
-        console.log("No cookies found. Generating new Overwatch stats");
+    const save = localStorage.getItem("owSave");
+    if (save !== null) {
+        game = JSON.parse(LZString().decompressFromBase64(save));
+        console.log("Loaded save from local storage");
     } else {
-        game = JSON.parse(cookies);
-        console.log("Loading Overwatch stats from cookies");
+        console.log("Failed to load save from storage. Generating new save");
     }
+
+    console.log("loaded " + game.inputs.length + " entries");
 }
 
 function save() {
-    document.cookie = JSON.stringify(game);
-    console.log("Saving Overwatch stats to cookies");
+    const save = LZString().compressToBase64(JSON.stringify(game));
+    localStorage.setItem("owSave", save);
+    if (localStorage.getItem("owSave") === save) {
+        console.log("Saving Overwatch stats to cookies");
+    } else {
+        console.log("Failed to save");
+    }
 }
 
 function updateFriendsDisable() {
@@ -319,4 +332,45 @@ function autoComplete(field, arr) {
     document.addEventListener("click", function (e) {
         closeAllLists(e.target);
     })
+}
+
+function generateTableOffCookies() {
+    let table = document.getElementById("owDataTable");
+    table.innerHTML = "";
+
+    game.inputs.forEach(function (entry) {
+        console.log("Adding row");
+        table.innerHTML += generateRow(entry);
+    });
+
+    function generateRow(entry) {
+        return "<tr>" +
+            "<td>" + entry["date"] + "</td>" +
+            "<td>" + entry["map"] + "</td>" +
+            "<td>" + entry["side"] + "</td>" +
+            "<td>" + entry["heroes"] + "</td>" +
+            "<td>" + entry["score"] + "</td>" +
+            "<td>" + entry["SR"] + "</td>" +
+            "<td>" + entry["friends"] + "</td>" +
+            "</tr>";
+    }
+}
+
+function generateRandomEntry(number) {
+    for (let i = 0; i < number; i++) {
+        game.inputs.push({
+            "date": new Date().getTime(),
+            "map": randomElement(MAPS),
+            "side": randomElement(["Attack", "Defense", "None"]),
+            "groupSize": randomElement([1, 2, 3, 4, 5, 6]),
+            "heroes": randomElement(HEROES),
+            "score": randomElement([[1, 0], [2, 3], [2, 2], [3, 0], [0, 0]]),
+            "SR": randomElement([2000, 2100, 2200, 2300, 2400, 2500, 2600, 2700, 2800, 2900]),
+            "friends": ""
+        });
+    }
+}
+
+function randomElement(array) {
+    return array[Math.floor((Math.random() * array.length))]
 }
