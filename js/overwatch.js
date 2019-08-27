@@ -85,7 +85,7 @@ const heroTypes = {
 
 let game = {
     inputs: [],
-    friends: ["test1", "test2"]
+    friends: []
 };
 
 const dev_mode = location.hostname === "localhost" || location.hostname === "127.0.0.1";
@@ -93,15 +93,20 @@ const dev_mode = location.hostname === "localhost" || location.hostname === "127
 load();
 setupButtons();
 setupAutoCompleteForHeroes();
-generateTableOffCookies();
+generateDataTable();
+generateFriendTable();
 save();
 
 if (dev_mode) {
+    document.title += " | (dev)";
     console.log("Server running in a dev environment.");
     console.log("Loading dev tools");
     window.load = load;
     window.save = save;
     window.generateRandomEntries = generateRandomEntry;
+    window.viewFriends = function () {
+        console.log(game.friends)
+    }
 }
 
 function addEntry() {
@@ -148,7 +153,7 @@ function addEntry() {
             "friends": friends
         });
         console.log("Added entry");
-        generateTableOffCookies();
+        generateDataTable();
         resetEntryInput();
         save();
     } else {
@@ -212,9 +217,14 @@ function save() {
 }
 
 function setupButtons() {
+    // input
     document.querySelector("#submitEntry").addEventListener("click", addEntry);
     document.querySelector("#resetEntry").addEventListener("click", resetEntryInput);
     document.querySelector("#owGroupSize").addEventListener("change", updateFriendsDisable);
+
+    // friend
+    document.querySelector("#submitFriend").addEventListener("click", addFriend);
+    document.querySelector("#resetFriend").addEventListener("click", resetFriendField);
 }
 
 function updateFriendsDisable() {
@@ -355,7 +365,7 @@ function autoComplete(field, arr) {
     })
 }
 
-function generateTableOffCookies() {
+function generateDataTable() {
     let table = document.getElementById("owDataTable");
     table.innerHTML = "";
 
@@ -390,8 +400,33 @@ function generateRandomEntry(number) {
             "friends": ""
         });
     }
+
+    function randomElement(array) {
+        return array[Math.floor((Math.random() * array.length))]
+    }
 }
 
-function randomElement(array) {
-    return array[Math.floor((Math.random() * array.length))]
+function addFriend() {
+    let friend = document.getElementById("owFriendInput").value.toLowerCase();
+    if (!game.friends.includes(friend)) {
+        game.friends.push(friend);
+        resetFriendField();
+        document.getElementById("owFriendTable").innerHTML += "<tr><td>"+friend+"</td></tr>";
+        save();
+    } else {
+        console.log("Friend already exists")
+    }
+}
+
+function resetFriendField() {
+    document.getElementById("owFriendInput").value = "";
+}
+
+function generateFriendTable() {
+    let table = document.getElementById("owFriendTable");
+    table.innerHTML = "";
+
+    game.friends.forEach(function (friend) {
+        table.innerHTML += "<tr><td>"+friend+"</td></tr>"
+    })
 }

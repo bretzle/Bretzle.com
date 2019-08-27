@@ -232,9 +232,20 @@
               <span>Data</span>
             </a>
           </li>
+          <li class="nav-item">
+            <a href="#tab-content-2" class="nav-link" id="tab-2" role="tab" data-toggle="tab" aria-selected="true">
+              <span>Friends</span>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a href="#tab-content-3" class="nav-link" id="tab-3" role="tab" data-toggle="tab" aria-selected="true">
+              <span>Analysis</span>
+            </a>
+          </li>
         </ul>
 
         <div class="tab-content">
+          <!-- Input -->
           <div id="tab-content-0" class="tab-pane tabs-animation fade active show" role="tabpanel">
             <div class="main-card mb-3 card">
               <div class="card-body">
@@ -372,6 +383,7 @@
               </div>
             </div>
           </div>
+          <!-- Data -->
           <div id="tab-content-1" class="tab-pane tabs-animation fade" role="tabpanel">
             <div class="main-card mb-3 card">
               <div class="card-body">
@@ -427,6 +439,49 @@
                   </tr>
                   </tbody>
                 </table>
+              </div>
+            </div>
+          </div>
+          <!-- Friends -->
+          <div id="tab-content-2" class="tab-pane tabs-animation fade" role="tabpanel">
+            <div class="main-card mb-3 card">
+              <div class="card-body">
+                <h5 class="card-title">Add a friend</h5>
+                <div>
+                  <div class="form-row">
+                    <div class="col-md-12">
+                      <div class="position-relative form-group">
+                        <label for="owFriendInput">Friend Name</label>
+                        <input id="owFriendInput" placeholder="name" class="form-control">
+                      </div>
+                    </div>
+                  </div>
+                  <button class="mt-2 btn btn-primary" id="submitFriend">Submit</button>
+                  <button class="mt-2 btn btn-primary" id="resetFriend">Reset</button>
+                </div>
+              </div>
+            </div>
+            <div class="main-card mb-3 card">
+              <div class="card-body">
+                <h5 class="card-title">Friend List</h5>
+                <table class="mb-0 table table-striped">
+                  <thead>
+                  <tr>
+                    <th>name</th>
+                  </tr>
+                  </thead>
+                  <tbody id="owFriendTable">
+
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+          <!-- Analysis -->
+          <div id="tab-content-3" class="tab-pane tabs-animation fade" role="tabpanel">
+            <div class="main-card mb-3 card">
+              <div class="card-body">
+                <h5 class="card-title">Analysis</h5>
               </div>
             </div>
           </div>
