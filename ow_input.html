@@ -238,32 +238,55 @@
             <div class="main-card mb-3 card">
               <div class="card-body">
                 <h5 class="card-title">Input</h5>
-                <form class="">
+                <div>
                   <div class="form-row">
                     <div class="col-md-6">
-                      <div class="position-relative form-group"><label for="exampleEmail11" class="">Map</label><input name="email" id="exampleEmail11" placeholder="with a placeholder" type="email" class="form-control"></div>
-                    </div>
-                    <div class="col-md-6">
-                      <div class="position-relative form-group"><label for="examplePassword11" class="">Password</label><input name="password" id="examplePassword11" placeholder="password placeholder" type="password" class="form-control"></div>
-                    </div>
-                  </div>
-                  <div class="position-relative form-group"><label for="exampleAddress" class="">Address</label><input name="address" id="exampleAddress" placeholder="1234 Main St" type="text" class="form-control"></div>
-                  <div class="position-relative form-group"><label for="exampleAddress2" class="">Address 2</label><input name="address2" id="exampleAddress2" placeholder="Apartment, studio, or floor" type="text" class="form-control">
-                  </div>
-                  <div class="form-row">
-                    <div class="col-md-6">
-                      <div class="position-relative form-group"><label for="exampleCity" class="">City</label><input name="city" id="exampleCity" type="text" class="form-control"></div>
+                      <div class="position-relative form-group">
+                        <label for="owMap">Map</label>
+                        <select id="owMap" class="form-control">
+
+                        </select>
+                      </div>
                     </div>
                     <div class="col-md-4">
-                      <div class="position-relative form-group"><label for="exampleState" class="">State</label><input name="state" id="exampleState" type="text" class="form-control"></div>
+                      <div class="position-relative form-group">
+                        <label for="owSide">Starting Side</label>
+                        <select id="owSide" class="form-control">
+                          <option>Attack</option>
+                          <option>Defense</option>
+                          <option>None</option>
+                        </select>
+                      </div>
                     </div>
-                    <div class="col-md-2">
-                      <div class="position-relative form-group"><label for="exampleZip" class="">Zip</label><input name="zip" id="exampleZip" type="text" class="form-control"></div>
+                    <div class="col-md-1">
+                      <div class="position-relative form-group"><label for="owScore">Score</label><input id="owScore" placeholder="3:0" class="form-control"></div>
+                    </div>
+                    <div class="col-md-1">
+                      <div class="position-relative form-group"><label for="owSR">SR</label><input id="owSR" placeholder="2000" class="form-control"></div>
                     </div>
                   </div>
-                  <div class="position-relative form-check"><input name="check" id="exampleCheck" type="checkbox" class="form-check-input"><label for="exampleCheck" class="form-check-label">Check me out</label></div>
-                  <button class="mt-2 btn btn-primary">Submit</button>
-                </form>
+                  <div class="form-row">
+                    <div class="col-md-1">
+                      <div class="position-relative form-group">
+                        <label for="owGroupSize">Group Size</label>
+                        <select id="owGroupSize" class="form-control">
+                          <option>1</option>
+                          <option>2</option>
+                          <option>3</option>
+                          <option>4</option>
+                          <option>5</option>
+                          <option>6</option>
+                        </select>
+                      </div>
+                    </div>
+                    <div class="col-md-11">
+                      <div class="position-relative form-group"><label for="owFriends">Friends</label><input id="owFriends" class="form-control"></div>
+                    </div>
+                  </div>
+                  <div class="position-relative form-group"><label for="owHeroes">Heroes</label><input id="owHeroes" class="form-control">
+                  </div>
+                  <button class="mt-2 btn btn-primary" onclick="addEntry()">Submit</button>
+                </div>
               </div>
             </div>
           </div>
@@ -348,6 +371,7 @@
   </div>
 </div>
 <script type="text/javascript" src="js/main.js"></script>
+<script type="text/javascript" src="js/overwatch.js"></script>
 </body>
 
 </html>
