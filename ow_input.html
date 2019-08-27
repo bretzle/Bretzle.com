@@ -294,10 +294,10 @@
                     </div>
                   </div>
                   <div class="form-row">
-                    <div class="col-md-1">
+                    <div class="col-md-2">
                       <div class="position-relative form-group">
                         <label for="owGroupSize">Group Size</label>
-                        <select id="owGroupSize" class="form-control">
+                        <select id="owGroupSize" class="form-control" onchange="updateFriendsDisable()">
                           <option>1</option>
                           <option>2</option>
                           <option>3</option>
@@ -307,20 +307,62 @@
                         </select>
                       </div>
                     </div>
-                    <div class="col-md-5">
+                    <div class="col-md-2">
                       <div class="position-relative form-group">
-                        <label for="owFriends">Friends</label>
-                        <select id="owFriends" class="form-control" multiple="">
-
-                        </select>
+                        <label for="owFriend_1">Friend 1</label>
+                        <input id="owFriend_1" class="form-control" disabled="">
                       </div>
                     </div>
-                    <div class="col-md-6">
+                    <div class="col-md-2">
                       <div class="position-relative form-group">
-                        <label for="owHeroes">Heroes</label>
-                        <select id="owHeroes" class="form-control">
-
-                        </select>
+                        <label for="owFriend_2">Friend 2</label>
+                        <input id="owFriend_2" class="form-control" disabled="">
+                      </div>
+                    </div>
+                    <div class="col-md-2">
+                      <div class="position-relative form-group">
+                        <label for="owFriend_3">Friend 3</label>
+                        <input id="owFriend_3" class="form-control" disabled="">
+                      </div>
+                    </div>
+                    <div class="col-md-2">
+                      <div class="position-relative form-group">
+                        <label for="owFriend_4">Friend 4</label>
+                        <input id="owFriend_4" class="form-control" disabled="">
+                      </div>
+                    </div>
+                    <div class="col-md-2">
+                      <div class="position-relative form-group">
+                        <label for="owFriend_5">Friend 5</label>
+                        <input id="owFriend_5" class="form-control" disabled="">
+                      </div>
+                    </div>
+                  </div>
+                  <div class="form-row">
+                    <div class="col-md-3">
+                      <div class="position-relative form-group">
+                        <label for="owHero_1">Hero 1</label>
+                        <div class="autocomplete">
+                          <input id="owHero_1" class="form-control">
+                        </div>
+                      </div>
+                    </div>
+                    <div class="col-md-3">
+                      <div class="position-relative form-group">
+                        <label for="owHero_2">Hero 2</label>
+                        <input id="owHero_2" class="form-control">
+                      </div>
+                    </div>
+                    <div class="col-md-3">
+                      <div class="position-relative form-group">
+                        <label for="owHero_3">Hero 3</label>
+                        <input id="owHero_3" class="form-control">
+                      </div>
+                    </div>
+                    <div class="col-md-3">
+                      <div class="position-relative form-group">
+                        <label for="owHero_4">Hero 4</label>
+                        <input id="owHero_4" class="form-control">
                       </div>
                     </div>
                   </div>

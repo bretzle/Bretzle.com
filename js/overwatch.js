@@ -59,11 +59,12 @@ let isSaving = false;
 let game;
 
 load();
+setupAutoCompleteForHeroes();
 
 function newGame() {
     return {
         inputs: [],
-        friends: ["test1", "test2"]
+        friends: ["test1", "test2", "test3", "test4", "test5", "test6", "test7"]
     };
 }
 
@@ -123,40 +124,138 @@ function save() {
     console.log("Saving Overwatch stats to cookies");
 }
 
-function fillMapPool() {
-    let selectTag = document.getElementById("owMap");
-    let option = document.createElement("option");
-    option.text = "";
-    selectTag.add(option);
+function updateFriendsDisable() {
+    let friend1 = document.getElementById("owFriend_1");
+    let friend2 = document.getElementById("owFriend_2");
+    let friend3 = document.getElementById("owFriend_3");
+    let friend4 = document.getElementById("owFriend_4");
+    let friend5 = document.getElementById("owFriend_5");
 
-    for (let index in MAPS) {
-        option = document.createElement("option");
-        option.text = MAPS[index];
-        selectTag.add(option);
+    let size = parseInt(document.getElementById("owGroupSize").value);
+
+    if (size === 6) {
+        friend5.disabled = false;
+        friend4.disabled = false;
+        friend3.disabled = false;
+        friend2.disabled = false;
+        friend1.disabled = false;
+    } else if (size === 5) {
+        friend5.disabled = true;
+        friend4.disabled = false;
+        friend3.disabled = false;
+        friend2.disabled = false;
+        friend1.disabled = false;
+    } else if (size === 4) {
+        friend5.disabled = true;
+        friend4.disabled = true;
+        friend3.disabled = false;
+        friend2.disabled = false;
+        friend1.disabled = false;
+    } else if (size === 3) {
+        friend5.disabled = true;
+        friend4.disabled = true;
+        friend3.disabled = true;
+        friend2.disabled = false;
+        friend1.disabled = false;
+    } else if (size === 2) {
+        friend5.disabled = true;
+        friend4.disabled = true;
+        friend3.disabled = true;
+        friend2.disabled = true;
+        friend1.disabled = false;
+    } else if (size === 1) {
+        friend5.disabled = true;
+        friend4.disabled = true;
+        friend3.disabled = true;
+        friend2.disabled = true;
+        friend1.disabled = true;
     }
 }
 
-function fillHeroPool() {
-
+function setupAutoCompleteForHeroes() {
+    autoComplete(document.getElementById("owHero_1"), HEROES);
+    autoComplete(document.getElementById("owHero_2"), HEROES);
+    autoComplete(document.getElementById("owHero_3"), HEROES);
+    autoComplete(document.getElementById("owHero_4"), HEROES);
 }
 
-function fillFriendPool() {
-    let selectTag = document.getElementById("owFriends");
-    let option = document.createElement("option");
-    option.text = "";
-    selectTag.add(option);
+function autoComplete(field, arr) {
+    let currentFocus;
 
-    game.friends.forEach(function(name) {
-        option = document.createElement("option");
-        option.text = String(name);
-        selectTag.add(option);
+    field.addEventListener("input", function () {
+        let a, b, i, val = this.value;
+        closeAllLists();
+
+        if (!val) { return false; }
+        currentFocus = -1;
+
+        a = document.createElement("DIV");
+        a.setAttribute("id", this.id + "autocomplete-list");
+        a.setAttribute("class", "autocomplete-items");
+
+        this.parentNode.appendChild(a);
+
+        for (i = 0; i < arr.length; i++) {
+            if (arr[i].substr(0, val.length).toUpperCase() === val.toUpperCase()) {
+                b = document.createElement("DIV");
+                b.innerHTML = "<strong>" + arr[i].substr(0, val.length) + "</strong>";
+                b.innerHTML += arr[i].substr(val.length);
+                b.innerHTML += "<input type='hidden' value='" + arr[i] +"'>";
+
+                b.addEventListener("click", function () {
+                    field.value = this.getElementsByTagName("input")[0].value;
+                    closeAllLists();
+                });
+                a.appendChild(b);
+            }
+        }
+    });
+
+    field.addEventListener("keydown", function (e) {
+        let x = document.getElementById(this.id + "autocomplete-list");
+
+        if (x) x = x.getElementsByTagName("div");
+
+        if (e.keyCode === 40) { // down
+            currentFocus++;
+            addActive(x);
+        } else if (e.keyCode === 38) { //up
+            currentFocus--;
+            addActive(x);
+        } else if (e.keyCode === 13) { // enter
+            e.preventDefault();
+            if (currentFocus > -1) {
+                if (x) x[currentFocus].click();
+            }
+        }
+    });
+
+    function addActive(x) {
+        if (!x) return false;
+
+        removeActive(x);
+        if (currentFocus >= x.length) currentFocus = 0;
+        if (currentFocus < 0) currentFocus = (x.length - 1);
+
+        x[currentFocus].classList.add("autocomplete-active");
+    }
+
+    function removeActive(x) {
+        for (let i = 0; i < x.length; i++) {
+            x[i].classList.remove("autocomplete-active");
+        }
+    }
+
+    function closeAllLists(element) {
+        const x = document.getElementsByClassName("autocomplete-items");
+        for (let i = 0; i < x.length; i++) {
+            if (element !== x[i] && element !== field) {
+                x[i].parentNode.removeChild(x[i]);
+            }
+        }
+    }
+
+    document.addEventListener("click", function (e) {
+        closeAllLists(e.target);
     })
-}
-
-function getMaps() {
-    return MAPS;
-}
-
-function getHeroes() {
-    return HEROES;
 }
