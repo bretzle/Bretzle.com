@@ -16,8 +16,11 @@ class ChartBuilder {
                     }
                 }
             },
+            dataLabels: {
+                enabled: false
+            },
             stroke: {
-                curve: 'strait'
+                curve: 'straight'
             },
             series: [
 
@@ -33,6 +36,11 @@ class ChartBuilder {
             }
         };
         this.element = document.querySelector("#" + id);
+    }
+
+    setType(type) {
+        this.options.chart.type = type;
+        return this;
     }
 
     addSeries(name, array) {

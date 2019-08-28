@@ -86,7 +86,19 @@ const heroTypes = {
 let game = {
     inputs: [],
     friends: [],
-    stats: {}
+    stats: {
+        SR: {
+            tank: [],
+            damage: [],
+            support: []
+        },
+        srGain: {
+            tank: [],
+            damage: [],
+            support: []
+        },
+        gamesPlayed: 0
+    }
 };
 let charts = [];
 
@@ -448,8 +460,21 @@ function generateFriendTable() {
 }
 
 function generateStats() {
+    let tankGames = [];
+    let damageGames = [];
+    let supportGames = [];
     let stats = {
         SR: {
+            tank: [],
+            damage: [],
+            support: []
+        },
+        srGain: {
+            tank: [],
+            damage: [],
+            support: []
+        },
+        netSrGain: {
             tank: [],
             damage: [],
             support: []
@@ -457,17 +482,41 @@ function generateStats() {
         gamesPlayed: 0
     };
 
+    // Sort Games into arrays
     game.inputs.forEach(function (entry) {
-        let sr = entry["SR"];
         let role = getRole(entry);
         if (role === "tank") {
-            stats.SR.tank.push(sr)
+            tankGames.push(entry);
         } else if (role === "damage") {
-            stats.SR.damage.push(sr)
+            damageGames.push(entry);
         } else if (role === "support") {
-            stats.SR.support.push(sr);
+            supportGames.push(entry);
+        } else {
+            console.log("INVALID ROLE")
         }
     });
+
+    // fill SR
+    tankGames.forEach(function (entry) {
+        stats.SR.tank.push(entry["SR"])
+    });
+    damageGames.forEach(function (entry) {
+        stats.SR.damage.push(entry["SR"])
+    });
+    supportGames.forEach(function (entry) {
+        stats.SR.support.push(entry["SR"])
+    });
+
+    // fill srGain
+    for (let i = 1; i < stats.SR.tank.length; i++) stats.srGain.tank.push(stats.SR.tank[i] - stats.SR.tank[i - 1]);
+    for (let i = 1; i < stats.SR.damage.length; i++) stats.srGain.damage.push(stats.SR.damage[i] - stats.SR.damage[i - 1]);
+    for (let i = 1; i < stats.SR.support.length; i++) stats.srGain.support.push(stats.SR.support[i] - stats.SR.support[i - 1]);
+
+    // fill netSrGain
+    for (let i = 1; i < stats.SR.tank.length; i++) stats.netSrGain.tank.push(stats.SR.tank[i] - stats.SR.tank[0]);
+    for (let i = 1; i < stats.SR.damage.length; i++) stats.netSrGain.damage.push(stats.SR.damage[i] - stats.SR.damage[0]);
+    for (let i = 1; i < stats.SR.support.length; i++) stats.netSrGain.support.push(stats.SR.support[i] - stats.SR.support[0]);
+
     stats.gamesPlayed = game.inputs.length;
 
     game.stats = stats;
@@ -486,15 +535,24 @@ function getRole(entry) {
 }
 
 function addCharts() {
-    let builder = new ChartBuilder("owSkillOverTime")
+    charts.push(new ChartBuilder("owSkillOverTime")
         .addSeries("tank", game.stats.SR.tank)
-        .addSeries("damage", game.stats.SR.damage)
-        .addSeries("support", game.stats.SR.support)
+        // .addSeries("damage", game.stats.SR.damage)
+        // .addSeries("support", game.stats.SR.support)
         .disableTooltip()
         .setStrokeCurve("smooth")
-        .build();
+        .build()
+    );
 
-    charts.push(builder);
+    charts.push(new ChartBuilder("owNetSkillOverTime")
+        .setType("area")
+        .addSeries("tank", game.stats.netSrGain.tank)
+        // .addSeries("damage", game.stats.netSrGain.damage)
+        // .addSeries("support", game.stats.netSrGain.support)
+        .disableTooltip()
+        .setStrokeCurve("smooth")
+        .build()
+    );
 }
 
 function renderAllCharts() {
