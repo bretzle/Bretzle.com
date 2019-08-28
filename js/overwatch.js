@@ -73,33 +73,17 @@ const mapTypes = {
 };
 const heroTypes = {
     tank: [
-        "D.Va", "Orisa", "Reinhardt", "Roadhog", "Sigma", "Winston", "Wrecking Ball", "Zarya",
+        "D.Va", "Orisa", "Reinhardt", "Roadhog", "Sigma", "Winston", "Wrecking Ball", "Zarya"
     ],
     damage: [
-        "Ashe", "Bastion", "Doomfist", "Genji", "Hanzo", "Junkrat", "McCree", "Mei", "Pharah", "Reaper", "Soldier: 76", "Sombra", "Symmetra", "Torbjörn", "Tracer", "Widowmaker",
+        "Ashe", "Bastion", "Doomfist", "Genji", "Hanzo", "Junkrat", "McCree", "Mei", "Pharah", "Reaper", "Soldier: 76", "Sombra", "Symmetra", "Torbjörn", "Tracer", "Widowmaker"
     ],
     support: [
         "Ana", "Baptiste", "Brigitte", "Lucio", "Mercy", "Moira", "Zenyatta"
     ]
 };
 
-let game = {
-    inputs: [],
-    friends: [],
-    stats: {
-        SR: {
-            tank: [],
-            damage: [],
-            support: []
-        },
-        srGain: {
-            tank: [],
-            damage: [],
-            support: []
-        },
-        gamesPlayed: 0
-    }
-};
+let game = newGame();
 let charts = [];
 
 const dev_mode = location.hostname === "localhost" || location.hostname === "127.0.0.1";
@@ -132,6 +116,29 @@ if (dev_mode) {
     window.viewStats = function () {
         console.log(game.stats)
     }
+}
+
+function newGame() {
+    return {
+        inputs: [],
+        friends: [],
+        stats: {
+            SR: {
+                tank: [],
+                damage: [],
+                support: []
+            },
+            srGain: {
+                tank: [],
+                damage: [],
+                support: []
+            },
+            gamesPlayed: 0,
+            tankGames: 0,
+            damageGames: 0,
+            supportGames: 0
+        }
+    };
 }
 
 function addEntry() {
@@ -416,18 +423,42 @@ function generateDataTable() {
 }
 
 function generateRandomEntry(number) {
-    for (let i = 0; i < number; i++) {
+
+    localStorage.removeItem("owSave");
+    game = newGame();
+
+    gen(heroTypes.tank);
+    gen(heroTypes.damage);
+    gen(heroTypes.support);
+
+    function gen(heroArray) {
         game.inputs.push({
             "date": new Date().getTime(),
-            "map": randomElement(MAPS),
-            "side": randomElement(["Attack", "Defense", "None"]),
-            "groupSize": randomElement([1, 2, 3, 4, 5, 6]),
-            "heroes": [randomElement(HEROES)],
+            "map": "Ilios",
+            "side": "None",
+            "groupSize": 1,
+            "heroes": [randomElement(heroArray)],
             "score": randomElement([[1, 0], [2, 3], [2, 2], [3, 0], [0, 0]]),
-            "SR": randomElement([2000, 2100, 2200, 2300, 2400, 2500, 2600, 2700, 2800, 2900]),
+            "SR": 2500,
             "friends": ""
         });
+
+        for (let i = 0; i < number - 1; i++) {
+            game.inputs.push({
+                "date": new Date().getTime(),
+                "map": randomElement(MAPS),
+                "side": randomElement(["Attack", "Defense", "None"]),
+                "groupSize": randomElement([1, 2, 3, 4, 5, 6]),
+                "heroes": [randomElement(heroArray)],
+                "score": randomElement([[1, 0], [2, 3], [2, 2], [3, 0], [0, 0]]),
+                "SR": parseInt(game.inputs[game.inputs.length - 1].SR) + randomElement([Math.floor(Math.random() * 50), Math.floor(Math.random() * -50)]),
+                "friends": ""
+            });
+        }
     }
+
+    save();
+    location.reload();
 
     function randomElement(array) {
         return array[Math.floor((Math.random() * array.length))]
@@ -479,7 +510,10 @@ function generateStats() {
             damage: [],
             support: []
         },
-        gamesPlayed: 0
+        gamesPlayed: 0,
+        tankGames: 0,
+        damageGames: 0,
+        supportGames: 0
     };
 
     // Sort Games into arrays
@@ -518,6 +552,9 @@ function generateStats() {
     for (let i = 1; i < stats.SR.support.length; i++) stats.netSrGain.support.push(stats.SR.support[i] - stats.SR.support[0]);
 
     stats.gamesPlayed = game.inputs.length;
+    stats.tankGames = tankGames.length;
+    stats.damageGames = damageGames.length;
+    stats.supportGames = supportGames.length;
 
     game.stats = stats;
 }
@@ -537,8 +574,9 @@ function getRole(entry) {
 function addCharts() {
     charts.push(new ChartBuilder("owSkillOverTime")
         .addSeries("tank", game.stats.SR.tank)
-        // .addSeries("damage", game.stats.SR.damage)
-        // .addSeries("support", game.stats.SR.support)
+        .addSeries("damage", game.stats.SR.damage)
+        .addSeries("support", game.stats.SR.support)
+        .enableZoom()
         .disableTooltip()
         .setStrokeCurve("smooth")
         .build()
@@ -547,8 +585,9 @@ function addCharts() {
     charts.push(new ChartBuilder("owNetSkillOverTime")
         .setType("area")
         .addSeries("tank", game.stats.netSrGain.tank)
-        // .addSeries("damage", game.stats.netSrGain.damage)
-        // .addSeries("support", game.stats.netSrGain.support)
+        .addSeries("damage", game.stats.netSrGain.damage)
+        .addSeries("support", game.stats.netSrGain.support)
+        .enableZoom()
         .disableTooltip()
         .setStrokeCurve("smooth")
         .build()

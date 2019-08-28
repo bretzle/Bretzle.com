@@ -6,15 +6,25 @@ class ChartBuilder {
                 height: 350,
                 type: 'line',
                 zoom: {
+                    type: 'x',
                     enabled: false
+                },
+                toolbar: {
+                    autoSelected: 'zoom'
                 },
                 animations: {
                     enabled: true,
-                    easing: 'linear',
+                    easing: 'easeinout',
+                    speed: 1000,
+                    animateGradually: {
+                        enabled: true,
+                        delay: 150
+                    },
                     dynamicAnimation: {
-                        speed: 10
+                        enabled: true,
+                        speed: 350
                     }
-                }
+                },
             },
             dataLabels: {
                 enabled: false
@@ -25,6 +35,9 @@ class ChartBuilder {
             series: [
 
             ],
+            markers: {
+                size: 0,
+            },
             grid: {
                 row: {
                     colors: ['#f3f3f3', 'transparent'],
@@ -33,6 +46,22 @@ class ChartBuilder {
             },
             tooltip: {
                 enabled: true
+            },
+            xaxis: {
+                type: 'numeric',
+                labels: {
+                    min: 1,
+                    show: true,
+                    formatter: function (val, timestamp, index) {
+                        return Math.floor(val);
+                    }
+                },
+                axisTicks: {
+                    show: true
+                },
+                axisBorder: {
+                    show: true
+                }
             }
         };
         this.element = document.querySelector("#" + id);
@@ -58,6 +87,11 @@ class ChartBuilder {
 
     disableTooltip() {
         this.options.tooltip.enabled = false;
+        return this;
+    }
+
+    enableZoom() {
+        this.options.chart.zoom.enabled = true;
         return this;
     }
 
