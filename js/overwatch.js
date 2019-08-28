@@ -85,8 +85,10 @@ const heroTypes = {
 
 let game = {
     inputs: [],
-    friends: []
+    friends: [],
+    stats: {}
 };
+let charts = [];
 
 const dev_mode = location.hostname === "localhost" || location.hostname === "127.0.0.1";
 
@@ -95,7 +97,12 @@ setupButtons();
 setupAutoCompleteForHeroes();
 generateDataTable();
 generateFriendTable();
+generateStats();
 save();
+
+addCharts();
+
+console.log(game);
 
 if (dev_mode) {
     document.title += " | (dev)";
@@ -106,6 +113,12 @@ if (dev_mode) {
     window.generateRandomEntries = generateRandomEntry;
     window.viewFriends = function () {
         console.log(game.friends)
+    };
+    window.viewEntries = function () {
+        console.log(game.inputs)
+    };
+    window.viewStats = function () {
+        console.log(game.stats)
     }
 }
 
@@ -225,6 +238,9 @@ function setupButtons() {
     // friend
     document.querySelector("#submitFriend").addEventListener("click", addFriend);
     document.querySelector("#resetFriend").addEventListener("click", resetFriendField);
+
+    // analysis
+    document.querySelector("#analysisTab").addEventListener("click", renderAllCharts);
 }
 
 function updateFriendsDisable() {
@@ -394,7 +410,7 @@ function generateRandomEntry(number) {
             "map": randomElement(MAPS),
             "side": randomElement(["Attack", "Defense", "None"]),
             "groupSize": randomElement([1, 2, 3, 4, 5, 6]),
-            "heroes": randomElement(HEROES),
+            "heroes": [randomElement(HEROES)],
             "score": randomElement([[1, 0], [2, 3], [2, 2], [3, 0], [0, 0]]),
             "SR": randomElement([2000, 2100, 2200, 2300, 2400, 2500, 2600, 2700, 2800, 2900]),
             "friends": ""
@@ -411,7 +427,7 @@ function addFriend() {
     if (!game.friends.includes(friend)) {
         game.friends.push(friend);
         resetFriendField();
-        document.getElementById("owFriendTable").innerHTML += "<tr><td>"+friend+"</td></tr>";
+        document.getElementById("owFriendTable").innerHTML += "<tr><td>" + friend + "</td></tr>";
         save();
     } else {
         console.log("Friend already exists")
@@ -427,6 +443,62 @@ function generateFriendTable() {
     table.innerHTML = "";
 
     game.friends.forEach(function (friend) {
-        table.innerHTML += "<tr><td>"+friend+"</td></tr>"
+        table.innerHTML += "<tr><td>" + friend + "</td></tr>"
     })
+}
+
+function generateStats() {
+    let stats = {
+        SR: {
+            tank: [],
+            damage: [],
+            support: []
+        },
+        gamesPlayed: 0
+    };
+
+    game.inputs.forEach(function (entry) {
+        let sr = entry["SR"];
+        let role = getRole(entry);
+        if (role === "tank") {
+            stats.SR.tank.push(sr)
+        } else if (role === "damage") {
+            stats.SR.damage.push(sr)
+        } else if (role === "support") {
+            stats.SR.support.push(sr);
+        }
+    });
+    stats.gamesPlayed = game.inputs.length;
+
+    game.stats = stats;
+}
+
+function getRole(entry) {
+    let hero = entry["heroes"][0];
+    if (heroTypes.tank.includes(hero)) {
+        return "tank";
+    } else if (heroTypes.damage.includes(hero)) {
+        return "damage";
+    } else if (heroTypes.support.includes(hero)) {
+        return "support";
+    }
+    return "noRole";
+}
+
+function addCharts() {
+    let builder = new ChartBuilder("owSkillOverTime")
+        .addSeries("tank", game.stats.SR.tank)
+        .addSeries("damage", game.stats.SR.damage)
+        .addSeries("support", game.stats.SR.support)
+        .disableTooltip()
+        .setStrokeCurve("smooth")
+        .build();
+
+    charts.push(builder);
+}
+
+function renderAllCharts() {
+    for (let i = 0; i < charts.length; i++) {
+        charts[i].render();
+    }
 }

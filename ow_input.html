@@ -222,7 +222,12 @@
 
         <ul class="body-tabs body-tabs-layout tabs-animated body-tabs-animated nav">
           <li class="nav-item">
-            <a href="#tab-content-0" class="nav-link show active" id="tab-0" role="tab" data-toggle="tab"
+            <a href="#tab-content-3" class="nav-link show active" id="analysisTab" role="tab" data-toggle="tab" aria-selected="true">
+              <span>Analysis</span>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a href="#tab-content-0" class="nav-link" id="tab-0" role="tab" data-toggle="tab"
                aria-selected="true">
               <span>Input</span>
             </a>
@@ -237,16 +242,11 @@
               <span>Friends</span>
             </a>
           </li>
-          <li class="nav-item">
-            <a href="#tab-content-3" class="nav-link" id="tab-3" role="tab" data-toggle="tab" aria-selected="true">
-              <span>Analysis</span>
-            </a>
-          </li>
         </ul>
 
         <div class="tab-content">
           <!-- Input -->
-          <div id="tab-content-0" class="tab-pane tabs-animation fade active show" role="tabpanel">
+          <div id="tab-content-0" class="tab-pane tabs-animation fade" role="tabpanel">
             <div class="main-card mb-3 card">
               <div class="card-body">
                 <h5 class="card-title">Input</h5>
@@ -478,10 +478,13 @@
             </div>
           </div>
           <!-- Analysis -->
-          <div id="tab-content-3" class="tab-pane tabs-animation fade" role="tabpanel">
+          <div id="tab-content-3" class="tab-pane tabs-animation fade show active" role="tabpanel">
             <div class="main-card mb-3 card">
               <div class="card-body">
                 <h5 class="card-title">Analysis</h5>
+                <div id="owSkillOverTime">
+
+                </div>
               </div>
             </div>
           </div>
@@ -510,6 +513,8 @@
 <script type="text/javascript" src="js/main.js"></script>
 <script type="module" src="js/LZString.js"></script>
 <script type="module" src="js/overwatch.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
+<script type="text/javascript" src="js/chart.js"></script>
 </body>
 
 </html>
