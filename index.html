@@ -1,68 +1,98 @@
----
-layout: blog
-title: index
-permalink: /
----
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>John Bretz</title>
 
-<div class="navbar-wrapper">
-  <nav class="navbar navbar-default navbar-fixed-top" role="navigation">
-    <div class="container">
-      <div class="navbar-header page-scroll">
-        <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
-          <span class="sr-only">Toggle navigation</span>
-          <span class="icon-bar"></span>
-          <span class="icon-bar"></span>
-          <span class="icon-bar"></span>
-        </button>
-        <a class="navbar-brand" href="#page-top" id="i18_title"><span data-i18n="website.title">{{ site.title }}</span></a>
-      </div>
-      <div id="navbar" class="navbar-collapse collapse">
-        <ul class="nav navbar-nav navbar-right" id="i18_navbar">
-          {% for section in site.data.landing %}
-          <li>
-            {% if section.page %}
-              <a class="page-scroll" href="{{ section.page}} ">
-            {% else %}
-              <a class="page-scroll" href="{{ section.id | prepend: '#'}} ">
-            {% endif %}
-              <span data-i18n="{{ section.i18n }}">{{ section.name }}</span>
-            </a>
-          </li>
-          {% endfor %}
-          {% for language in site.data.index.language %}
-          <li>
-            <a id="set_lang_{{ language.locale }}" class="btn btn-sm set_{{ language.locale }}" data-locale="{{ language.locale }}">
-              <img src="{{ language.flag | prepend: site.baseurl }}" height="16" width="16">
-            </a>
-          </li>
-          {% endfor %}
-        </ul>
-      </div>
+<!-- Required meta tags -->
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+<!-- Bootstrap CSS -->
+<link rel="stylesheet" href="./style/bootstrap.min.css">
+
+<!-- Custom spacing and fonts that are often reused -->
+<link rel="stylesheet" href="./style/spacing.css" type="text/css">
+<link rel="stylesheet" href="./style/fonts.css" type="text/css">
+<link rel="stylesheet" href="./style/main.css" type="text/css">
+
+<!-- jQuery first, then Popper.js, then Bootstrap JS -->
+<script src="./scripts/popper.min.js"></script>
+<script src="./scripts/jquery.min.js"></script>
+<script src="./scripts/bootstrap.min.js"></script>
+    </head>
+    <body>
+        <link rel="stylesheet" type="text/css" href="./style/nav.css" />
+<nav class="navbar fixed-top navbar-expand-lg toggle-height" id="global-nav">
+  <div class="container">
+    <a class="navbar-brand scrollN" href="/">John Bretz</a>
+    <button class="navbar-toggler custom-toggler" type="button" data-toggle="collapse"
+      data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false"
+      aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon custom-toggler"></span>
+    </button>
+
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav mr-auto">
+        <li> <a class="nav-link scrollN" href="/software/">Software</a></li>
+        <li> <a class="nav-link scrollN" href="/electronics/">Electronics</a></li>
+      </ul>
+      <ul class="navbar-nav">
+        <li><a class="nav-link scrollN" href="/contact">Contact</a></li>
+      </ul>
     </div>
-  </nav>
-</div>
-{% if site.index_carousel %}
-{% include carousel.html %}
-{% endif %}
+  </div>
+</nav>
+<script type="text/javascript" src="./scripts/nav.js"></script>
 
-{% for section in site.data.landing %}
-{% assign loopindex = forloop.index | modulo: 2 %}
-<section id="{{ section.id }}" class="features {% if loopindex != 1 %} gray-section {% endif %} {{ section.css }}" style="margin-top: 0;">
-  {% include sections/{{section.tpl}} %}
-</section>
-{% endfor %}
-<style>
-iframe {
-  -moz-transform: scale(0.25, 0.25);
-  -webkit-transform: scale(0.25, 0.25);
-  -o-transform: scale(0.25, 0.25);
-  -ms-transform: scale(0.25, 0.25);
-  transform: scale(0.25, 0.25);
-  -moz-transform-origin: top left;
-  -webkit-transform-origin: top left;
-  -o-transform-origin: top left;
-  -ms-transform-origin: top left;
-  transform-origin: top left;
-}
-</style>
-<!-- <iframe src="https://www.maimemo.com/share/page/?uid=779139&pid=660" style="display: none;"></iframe> -->
+        <link rel="stylesheet" type="text/css" href="./style/footer.css" />
+<footer class="footer container-fluid">
+    <div class="container extraSpace">
+        <ul class="centerLinks socialIcons">
+            <li style="display:inline-block">
+                <a href="https://twitter.com/jbretzle"><img src="/images/icons/twitter.png"></img></a>
+            </li>
+            <li style="display:inline-block">
+                <a href="https://github.com/bretzle"><img src="/images/icons/github.png"></img></a>
+            </li>
+            <li style="display:inline-block">
+                <a href="https://www.linkedin.com/in/johnathan-bretz-884a65184//"><img
+                        src="/images/icons/linkedIn.png"></img></a>
+            </li>
+            <li style="display:inline-block">
+                <a href="/contact"><img src="/images/icons/email.png"></img></a>
+            </li>
+        </ul>
+        <p class="footerText subP">Email me with any suggestions,
+            collaborations, or just to talk!<br>johnfish218@gmail.com</p>
+    </div>
+    <div class="bottomLinksDiv">
+        <div class="container">
+            <div class="row">
+                <div class="col-6 col-md">
+                    <a href="/">Home</a>
+                </div>
+                <div class="col-md rm">
+                    <p>|</p>
+                </div>
+                <div class="col-6 col-md">
+                    <a href="/software">Software</a>
+                </div>
+                <div class="col-md rm">
+                    <p>|</p>
+                </div>
+                <div class="col-6 col-md">
+                    <a href="/electronics">Electronics</a>
+                </div>
+                <div class="col-md rm">
+                    <p>|</p>
+                </div>
+                <div class="col-6 col-md">
+                    <a href="/contact">Contact</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</footer>
+<script src="./scripts/footerShift.js" type="text/javascript"></script>
+    </body>
+</html>
