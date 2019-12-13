@@ -4,10 +4,7 @@ body, html {
 }
 
 .homeImg {
-    background-image: url("../images/IMG_2130.jpg");
-    background-image: url("../images/IMG_2134.jpg");
-    background-image: url("../images/IMG_1691.jpg");
-    background-image: url("../images/IMG_1068.jpg");
+    background-image: url("../images/IMG_29.jpg");
 
     height: 100%;
     background-position: center;
@@ -175,7 +172,7 @@ body, html {
     color: #b5b5b5;
 }
 
-.electronicsBack {
+.hardwareBack {
     /* background-image: url("../images/IMG_1716.jpg"); */
     background-position: center;
     background-repeat: no-repeat;
@@ -244,7 +241,7 @@ body, html {
 }
 
 @media (min-width: 768px) {
-    .softwareDiv, .electronicsDiv {
+    .softwareDiv, .hardwareDiv {
         padding-top: 60px;
         padding-bottom: 80px;
     }

@@ -31,7 +31,7 @@ function navScroll(){
             })
             if(!(filename === 'timelapse-auto-ramp') && !(filename === 'pathfinding')
                 && !(filename === 'air-conditioner-DIY') && !(filename === 'contact') && !(filename === 'yt-desc')
-                && !(filename === 'software') && !(filename === 'electronics')
+                && !(filename === 'software') && !(filename === 'hardware')
                 && !(filename === 'films') && !(filename === 'photography')) {
                 $(".scrollN").css({
                     "color":"white"
