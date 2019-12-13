@@ -4,7 +4,17 @@ body, html {
 }
 
 .homeImg {
+    background-image: url("../images/IMG_2134.jpg");
     background-image: url("../images/IMG_29.jpg");
+
+    height: 100%;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+
+.softImg {
+    background-image: url("../images/IMG_2134.jpg");
 
     height: 100%;
     background-position: center;
